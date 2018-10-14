@@ -1,16 +1,13 @@
 var express = require("express");
 var router = express.Router();
-var Docker = require("dockerode");
-var stream = require("stream");
-var io = require("socket.io");
-const docker = new Docker({ socketPath: "../var/run/docker.sock" });
+const docker = require("../bin/docker");
 
 router.get("/", function(req, res, next) {
   docker.listContainers({ all: true }, function(err, containers) {
     let newContainer = containers
-      // .filter(container => {
-      //   return container.Image != "kinematic:latest";
-      // })
+      .filter(container => {
+        return container.Image != "kinematic:latest";
+      })
       .map(container => {
         container.Names[0] = container.Names[0].split("/")[1];
         switch (container.State) {
