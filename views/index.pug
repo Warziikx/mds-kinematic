@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  div(class="columns is-centered",style={margin : "20px"})
+    div(class="column is-10")
+      .box
+        .columns.is-multiline
+          .column.is-6
+              p CPU
+          .column.is-6
+              p= info.NCPU
+          .column.is-6
+              p Memory
+          .column.is-6
+              p= info.MemTotal
+

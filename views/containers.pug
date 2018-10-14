@@ -1,0 +1,61 @@
+extends layout
+
+block content
+  div(class="columns is-centered",style={margin : "20px"})
+    div(class="column is-10")
+        div(style={display : "flex",'flex-direction' : 'row','justify-content': 'space-between'})
+            h4(class="title is-4") Containers
+            a.button(href= "/container/new") 
+                span.icon
+                    i.fa.fa-plus
+                span Nouveau
+        hr(style={margin : "5px"})
+        div(style={'text-align': 'center'})
+            table(class="table is-centered",style={margin:'auto'})
+                thead
+                    tr
+                        th &Eacute;tat
+                        th Nom
+                        th Image
+                        th Adresse IP
+                        th Ports
+                        th Actions
+                tbody
+                    each container in containers
+                        tr
+                            td
+                                if container.StateNum == 0
+                                    a.button.is-success.is-small Running
+                                else if container.StateNum == 1
+                                    a.button.is-danger.is-small Exited
+                                else if container.StateNum == 2
+                                    a.button.is-warning.is-small Paused
+                                else if container.StateNum == 3
+                                    a.button.is-link.is-small Created
+                                else if container.StateNum == 4
+                                    a.button.is-info.is-small Restarting
+                                else if container.StateNum == 5
+                                    a.button.is-danger.is-small Dead
+                                else
+                                    a.button Unknow
+                            td= container.Names[0]
+                            td= container.Image
+                            td= container.NetworkSettings.Networks.bridge.IPAddress
+                            td
+                                each port in container.Ports
+                                    p= port.PublicPort + ":" + port.PrivatePort
+                            td
+                                if container.StateNum == 0
+                                    a(href= "/container/stop/" + container.Id) 
+                                        span(class="icon has-text-danger")
+                                            i(class="fas fa-stop")
+                                else if container.StateNum == 1
+                                    a(href= "/container/start/" + container.Id) 
+                                        span(class="icon has-text-success")
+                                            i(class="fas fa-play")
+                                    a(href= "/container/remove/" + container.Id) 
+                                        span(class="icon has-text-danger")
+                                            i(class="fas fa-trash")
+                                a(href= "/container/" + container.Id) 
+                                    span(class="icon has-text-info")
+                                        i(class="fas fa-info")

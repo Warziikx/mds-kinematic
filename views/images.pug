@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  div(class="columns is-centered",style={margin : "20px"})
+    div(class="column is-10")
+        div(style={display : "flex",'flex-direction' : 'row','justify-content': 'space-between'})
+            h4(class="title is-4") Images
+            a.button(href= "/image/new") 
+                span.icon
+                    i.fa.fa-plus
+                span Nouveau
+        hr(style={margin : "5px"})
+        div(style={'text-align': 'center'})
+            table(class="table is-centered",style={margin:'auto'})
+                thead
+                    tr
+                        th Tags
+                        th Taille
+                        th Créer le
+                        th Actions
+                tbody
+                    each image in images
+                        tr
+                            td
+                                each tag in image.RepoTags
+                                    p= tag
+                            td= image.Size
+                            td= image.Created
+                            td
+                                a(href="/image/delete/" + image.Id) 
+                                    span(class="icon has-text-danger")
+                                        i(class="fas fa-trash")
+                                span(class="icon has-text-info")
+                                    i(class="fas fa-edit")
+
+        

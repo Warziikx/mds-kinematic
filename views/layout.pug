@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title= title
+    link(rel="shortcut icon", href="/images/iconV3.ico", type="image/x-icon")
+    script(src="https://code.jquery.com/jquery-3.3.1.min.js",integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=",crossorigin="anonymous")
+    link(href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css",rel="stylesheet")
+    script(src="https://use.fontawesome.com/releases/v5.1.0/js/all.js")
+  block head
+  body
+    div(style={ background: '#9CAFB7',height : '100px',width : '100%','flex-direction' : "row",display : "flex"})
+      a(href="/")
+        img(src="/images/logoV2.svg",style={'margin-left' : '20px',height : "100px",width : "200px"})
+      div(style={'flex-direction' : "row",display : "flex",'margin-top' : 'auto','margin-bottom' : 'auto'})
+        a(href="/container",style={'margin-left' : '40px'} )
+          if containerIndex
+            h6(class="title is-6",style={color: 'white'}) Containers
+          else
+            h6(class="title is-6") Containers
+        a(href="/image",style={'margin-left' : '20px'} )
+          if imageIndex
+            h6(class="title is-6",style={color: 'white'}) Images
+          else
+            h6(class="title is-6") Images
+    block content

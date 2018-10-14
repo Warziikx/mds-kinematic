@@ -1,0 +1,103 @@
+extends layout
+
+block head
+    script(src="/socket.io/socket.io.js")
+    link(rel="stylesheet" href="/stylesheets/containerForm.css")
+
+block content
+  div(class="columns is-centered",style={margin : "20px"})
+    div(class="column is-10")
+        .box
+            h5(class="title is-5") Actions
+            hr
+            .field.has-addons
+                if !container.State.Running
+                    p.control
+                        a.button.is-success(href= "/container/start/"+ container.Id)
+                            span.icon.is-small
+                                i.fas.fa-play
+                            span Start
+                    p.control
+                        a.button.is-danger(href= "/container/remove/" + container.Id)
+                            span.icon.is-small
+                                i.fas.fa-trash
+                            span Remove
+                //- if container.State.Running
+                //-     p.control
+                //-         a.button.is-danger
+                //-             span.icon.is-small
+                //-                 i.fas.fa-stop
+                //-             span Stop
+                if container.State.Running
+                    p.control
+                        a.button.is-danger(href= "/container/stop/" + container.Id)
+                            span.icon.is-small
+                                i.fas.fa-bomb
+                            span Kill
+        .box
+            h5(class="title is-5") Status
+            hr
+            .columns.is-multiline
+                .column.is-6
+                    p Nom
+                .column.is-6
+                    p= container.Name
+                .column.is-6
+                    p Adresse IP
+                .column.is-6
+                    p= container.NetworkSettings.IPAddress
+                .column.is-6
+                    p Status
+                .column.is-6
+                    p= container.State.Status
+                if container.State.Running
+                    .column.is-6
+                        p Start Time
+                    .column.is-6
+                        p= container.State.StartedAt
+                else
+                    .column.is-6
+                        p Stop Since 
+                    .column.is-6
+                        p= container.State.FinishedAt
+        .box
+            h5(class="title is-5") Log
+            hr
+            .columns
+                .column.is-12
+                    .box#log.log(style={})
+        .box
+            h5(class="title is-5") Details
+            hr
+            .columns.is-multiline
+                .column.is-6
+                    p Image
+                .column.is-6
+                    p(style={overflow: 'hidden'})= container.Config.Image
+                .column.is-6
+                    p Memoire Alloué
+                .column.is-6
+                    p= container.HostConfig.Memory
+                .column.is-6
+                    p Cpu Alloué
+                .column.is-6
+                    p= container.HostConfig.NanoCpus
+                .column.is-6
+                    p Variable D'environement
+                .column.is-6
+                    each envVar in container.Config.Env
+                        p= envVar
+                .column.is-6
+                    p Partage de Volume
+                .column.is-6
+                    each vol in container.HostConfig.Binds
+                        p= vol
+    script.
+
+        $(function () {
+            var socket = io("/containers/one");
+            socket.on('logs output', function(msg){
+                var html = document.getElementById("log").innerHTML;
+                document.getElementById('log').innerHTML = html + msg + "<br/>"
+            });
+        });
